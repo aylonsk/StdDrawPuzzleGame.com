@@ -3,22 +3,20 @@ import java.io.FileInputStream;
 import java.util.Scanner;
 import java.util.Random;
 
-/** 
- * Gateway Java Project 4, Fall 2023
- * Simulates a slider puzzle using supplied subfolder of images.
+/**
+ * Simulates a slider puzzle using supplied sub-folder of images and StdDraw class.
  */
 public class Project4 {
 
    /**
     * Set up the puzzle and run the game loop until puzzle is solved.
     * @param args  command-line arguments, ignored
-    *
     * [PROVIDED STARTER CODE: DO NOT MODIFY EXCEPT FOR TEMPORARY
     *  CHANGE TO VALUE OF NUMSCRAMBLESTEPS WHILE TESTING]
     */
    public static void main(String[] args) throws IOException {
    
-      //Prompt user for name of subfolder where tiled image files are
+      //Prompt user for name of sub-folder where tiled image files are
       final String FOLDER = collectFolderName();
       
       //Obtain a populated array with names of tile images in
@@ -47,7 +45,7 @@ public class Project4 {
       displayFilesInGrid(files, TILEHEIGHT, TILEWIDTH, SEP);
       StdDraw.pause(750);
       
-      //Clear canvas and show message that tile scrambling is occuring   
+      //Clear canvas and show message that tile scrambling is occurring
       StdDraw.clear(StdDraw.DARK_GRAY); 
       displayStatusMessage(CANVASWIDTH, CANVASHEIGHT, TILEHEIGHT, 
          "Scrambling...");
@@ -63,8 +61,9 @@ public class Project4 {
    
       //Now allow user to play by clicking mouse to move blank space tile
       //either horizontally or vertically in grid
-      double xCoord;
-      double yCoord;
+      double xCord;
+      double yCord;
+
       int moveCount = 0; //counts total number of legal moves made by user
       
       //Loop through user moves repeatedly until puzzle is completed
@@ -107,26 +106,26 @@ public class Project4 {
       
 
    /** 
-    * Prompt user for name of subfolder containing image files, and return
-    * the subfolder name with a '/' appended to the end. The only required
+    * Prompt user for name of sub-folder containing image files, and return
+    * the sub-folder name with a '/' appended to the end. The only required
     * use of a Scanner object in the program occurs within this method.
-    * @return the name of the images subfolder with '/' appended to it
-    *
-    * [3 points]
+    * @return the name of the images sub-folder with '/' appended to it
     */
    public static String collectFolderName() {
    
-   
-   
-   
       //Display a prompt for the user (do not modify contents of this prompt)
-      System.out.println("Enter name of subfolder that contains tile images,");
-      System.out.print("e.g. Colors or GrayTee or Beach: ");
+      System.out.println("Enter name of puzzle sub-folder.");
+      System.out.print("Colors (Easy), GrayTee (Medium), or Beach (Hard): ");
     
-      Scanner scnr = new Scanner(System.in); 
+      Scanner scnr = new Scanner(System.in);
       String puzzleName = scnr.nextLine();
-      return puzzleName + "/"; 
-   
+      if (puzzleName.equals("Colors") || puzzleName.equals("GrayTee") || puzzleName.equals("Beach")) {
+         return puzzleName + "/";
+      }
+      else {
+         System.out.println("ERROR: Not a valid puzzle sub-folder!");
+         return collectFolderName();
+      }
    }
    
    
@@ -144,9 +143,7 @@ public class Project4 {
     * suffix .png. For example, 0.png(the checkerboard), 1.png, 2.png, etc.
     * @param folder the relative name of the folder containing the images
     * @return the array containing filenames
-    * @throws IOException if dimensions.txt is not found in given folder       
-    *
-    * [10 points]
+    * @throws IOException if dimensions.txt is not found in given folder
     */ 
   
    public static String[][] createImageArray(String folder) throws IOException {
@@ -166,14 +163,10 @@ public class Project4 {
       for (int i = 0; i < rows; ++i) {
          for (int j = 0; j < columns; ++j) {
             puzzleArray[i][j] = folder + k + ".png";
-            System.out.print(puzzleArray[i][j] + " ");
             ++k;
          }
-      }  
-       
-      
-      return puzzleArray; 
-   
+      }
+      return puzzleArray;
    }
 
 
@@ -185,8 +178,6 @@ public class Project4 {
     * @param tileHeight  the height of a single tile in the puzzle
     * @param tileWidth  the width of a single tile in the puzzle
     * @param sep  the amount of space separating adjacent tiles
-    *
-    * [6 points]
     */
    public static void displayFilesInGrid(String[][] files, int tileHeight, 
                                          int tileWidth, int sep) {
@@ -215,8 +206,6 @@ public class Project4 {
     * @return  a new length-2 array holding the current location of 
     *          the blank tile, with position 0 holding the row number
     *          in the grid, and position 1 holding the column number
-    *
-    * [12 points]
     */
    public static int[] scrambleBoard(String[][] files, 
                                      int numScrambleSteps) {
@@ -292,7 +281,7 @@ public class Project4 {
 
    /**
     * Determine if a row number and column number specify a valid move location
-    * from the given row and column number representing the current lccation of
+    * from the given row and column number representing the current location of
     * the blank space. Specifically, this checks if the sum of the magnitudes
     * of the differences in the row numbers and column numbers is exactly one.
     * Note: this method does not check whether the destination location
@@ -303,15 +292,13 @@ public class Project4 {
     * @param destRow  the row number of the destination location
     * @param destCol  the column number of the destination location
     * @return  true if the move pattern is valid, and false otherwise
-    *
-    * [6 points]
     */
    public static boolean movePatternIsValid(int[] blankLoc,
                                             int destRow, int destCol) {
-      int ydifference = Math.abs(blankLoc[0] - destRow);
-      int xdifference = Math.abs(blankLoc[1] - destCol);
+      int yDifference = Math.abs(blankLoc[0] - destRow);
+      int xDifference = Math.abs(blankLoc[1] - destCol);
       
-      return ydifference + xdifference == 1;
+      return yDifference + xDifference == 1;
    
    }
        
@@ -332,8 +319,6 @@ public class Project4 {
     *                 position 1 holding the column number
     * @param destRow  the row of the destination for the blank
     * @param destCol  the column of the destination for the blank
-    *
-    * [3 points]
     */
    public static void makeMove(String[][] files, int[] blankLoc,
                                int destRow, int destCol) {
@@ -358,9 +343,7 @@ public class Project4 {
     *                   position 1 holding the column number
     *  @param folder  the name of the path to the image files used,
     *                 which includes the terminating slash character
-    *  @return  true if the puzzle matches the target, false otherwise 
-    *
-    * [4 points]
+    *  @return  true if the puzzle matches the target, false otherwise
     */
    public static boolean puzzleSolved(String[][] files, 
                                       int[] blankLoc,
@@ -387,8 +370,6 @@ public class Project4 {
     * Initialize the drawing canvas size and drawing settings. 
     * @param canvasHeight the desired height of the drawing window
     * @param canvasWidth the desired width of the drawing window
-    *
-    * [PROVIDED STARTER CODE: DO NOT MODIFY]
     */     
    public static void initializeCanvas(int canvasHeight, int canvasWidth) {   
    
@@ -412,8 +393,6 @@ public class Project4 {
     * @param tileHeight  the height of a single tile in this display
     * @param sep  the width of a separator line in this display
     * @param numRows  the total number of rows in this grid
-    *
-    * [PROVIDED STARTER CODE: DO NOT MODIFY]
     */
    public static void displayOneTile(String filename, int row, int col,  
                                      int tileWidth, int tileHeight, 
@@ -436,8 +415,6 @@ public class Project4 {
     * @param  canvasHeight  the height of the entire canvas
     * @param  tileHeight  the height of one tile in the grid
     * @param  message  the status message to display
-    *
-    * [PROVIDED STARTER CODE: DO NOT MODIFY]
     */
    public static void displayStatusMessage(int canvasWidth,
                                            int canvasHeight, 
@@ -465,8 +442,6 @@ public class Project4 {
     * @param moveCount  the total number of actual moves made by user
     * @param canvasWidth  the width of the canvas in total
     * @param canvasHeight  the height of the canvas in total
-    *
-    * [PROVIDED STARTER CODE: DO NOT MODIFY]
     */
    public static void displayEndOfGame(String[][] files, int moveCount,
                                        int canvasWidth, int canvasHeight) {
@@ -480,10 +455,10 @@ public class Project4 {
          message = "Puzzle solved in " + moveCount + " moves!";
       }
    
-      //Create a dark background covering most of canvas before
+      //Create a dark background covering most of the canvas before
       //displaying the constructed message in light color
       StdDraw.setPenColor(StdDraw.DARK_GRAY);
-      StdDraw.filledRectangle(canvasWidth / 2, canvasHeight / 2,
+      StdDraw.filledRectangle(canvasWidth / 2.0, canvasHeight / 2.0,
                               canvasWidth * .45, canvasHeight * .45);    
       StdDraw.setPenColor(StdDraw.WHITE);
       StdDraw.text(canvasWidth / 2.0, canvasHeight / 2.0, message, 45);
