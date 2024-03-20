@@ -147,8 +147,7 @@ public class Project4 {
     */ 
   
    public static String[][] createImageArray(String folder) throws IOException {
-     
-   
+
       int rows;
       int columns;
       FileInputStream filestream = new FileInputStream(folder
@@ -181,7 +180,6 @@ public class Project4 {
     */
    public static void displayFilesInGrid(String[][] files, int tileHeight, 
                                          int tileWidth, int sep) {
-                                          
       int numColumns = files[0].length;
       int numRows = files.length;
       
@@ -322,7 +320,7 @@ public class Project4 {
     */
    public static void makeMove(String[][] files, int[] blankLoc,
                                int destRow, int destCol) {
-   
+      
       String substitute = files[blankLoc[0]][blankLoc[1]];
       files[blankLoc[0]][blankLoc[1]] = files[destRow][destCol];
       files[destRow][destCol] = substitute;
